@@ -179,17 +179,17 @@ export const MultiLevelCarousel = ({
         vertexShader: `
           varying vec2 vUv;
           varying vec3 vPosition;
-          
+
           void main() {
             vUv = uv;
             vPosition = position;
-            
+
             // Add subtle cylindrical bending
             vec3 pos = position;
             float bendAmount = 0.15;
             float normalizedX = pos.x / ${imageWidth * 0.5};
             pos.z += normalizedX * normalizedX * bendAmount;
-            
+
             gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
           }
         `,
@@ -198,20 +198,20 @@ export const MultiLevelCarousel = ({
           uniform float uOpacity;
           uniform float uCornerRadius;
           uniform vec2 uResolution;
-          
+
           varying vec2 vUv;
-          
+
           float roundedRectSDF(vec2 centerPos, vec2 size, float radius) {
             return length(max(abs(centerPos) - size + radius, 0.0)) - radius;
           }
-          
+
           void main() {
             vec2 center = vUv - 0.5;
             vec2 size = vec2(0.5 - uCornerRadius);
-            
+
             float dist = roundedRectSDF(center, size, uCornerRadius);
             float mask = 1.0 - smoothstep(-0.01, 0.01, dist);
-            
+
             vec4 texColor = texture2D(uTexture, vUv);
             gl_FragColor = vec4(texColor.rgb, texColor.a * mask * uOpacity);
           }
