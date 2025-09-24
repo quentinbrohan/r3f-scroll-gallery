@@ -6,13 +6,7 @@ import { useScroll } from "@react-three/drei"
 import { MultiLevelCarousel } from "./MultiLevelCarousel"
 import type * as THREE from "three"
 
-export const Experience = () => {
-  const groupRef = useRef<THREE.Group>(null)
-  const scroll = useScroll()
-  const lastScrollOffset = useRef(0)
-  const scrollVelocity = useRef(0)
-
-  // Sample images for each level
+export   // Sample images for each level
   const sampleImages = [
     // Level 1 - Nature
     [
@@ -51,6 +45,12 @@ export const Experience = () => {
       "/quantum-computing-concept.png",
     ],
   ]
+
+export const Experience = () => {
+  const groupRef = useRef<THREE.Group>(null)
+  const scroll = useScroll()
+  const lastScrollOffset = useRef(0)
+  const scrollVelocity = useRef(0)
 
   useFrame((state, delta) => {
     if (groupRef.current) {

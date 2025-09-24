@@ -8,12 +8,14 @@ interface StripProps {
     numPlanes?: number;
     radius?: number
     y: number;
+    textures: THREE.Texture[]
 }
 
 const Strip: React.FC<StripProps> = ({
     numPlanes = 6,
     radius = 2.5,
     y,
+    textures,
 }) => {
     const groupRef = useRef<THREE.Group>(null);
 
@@ -31,6 +33,7 @@ const Strip: React.FC<StripProps> = ({
                     key={i}
                     position={[x, 0, z]}
                     lookAtY={y}
+                    texture={textures[i]}
                 />
             )
         }
