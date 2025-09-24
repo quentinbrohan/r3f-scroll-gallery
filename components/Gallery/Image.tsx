@@ -46,6 +46,8 @@ const Image: React.FC<ImageProps> = ({ position, lookAtY, texture }) => {
             radius={0}
             onPointerOver={pointerOver}
             onPointerOut={pointerOut}
+            castShadow
+            receiveShadow
         >
             <bentPlaneGeometry args={[DEFAULT_BEND_FACTOR, 1, 1, 20, 20]} />
         </ImageDrei>
