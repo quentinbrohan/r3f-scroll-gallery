@@ -1,38 +1,34 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import Strip from './Strip';
+import Strip, { DEFAULT_ITEMS_PER_STRIP } from './Strip';
 import * as THREE from 'three';
 import { useScrollbar } from '@14islands/r3f-scroll-rig';
 import { useTexture } from '@react-three/drei';
 import { sampleImages } from '../Experience';
 
-const ITEMS_PER_STRIP = 6;
-
 interface StripsProps {
-    numStrips?: number;
+    stripCount?: number;
+    stripItemsCount?: number;
 }
 
-const Strips: React.FC<StripsProps> = ({ numStrips = 10 }) => {
+const Strips: React.FC<StripsProps> = ({ stripCount = 1, stripItemsCount = DEFAULT_ITEMS_PER_STRIP }) => {
     const globalLenis = useScrollbar();
 
     const groupRef = useRef<THREE.Group>(null)
 
     const textures = useTexture(sampleImages.flat())
-    const itemsToStripsRatio = textures.length / ITEMS_PER_STRIP;
+    const itemsToStripsRatio = textures.length / stripItemsCount;
     const maxStrips = Number.isInteger(itemsToStripsRatio) ? itemsToStripsRatio : Math.round(itemsToStripsRatio)
 
     const texturesByStrips = useMemo(() => {
         const texturesInStrips: THREE.Texture[][] = [];
 
-        for (let i = 0; i < textures.length; i += ITEMS_PER_STRIP) {
-            const stripTextures = textures.slice(i, i + ITEMS_PER_STRIP);
+        for (let i = 0; i < textures.length; i += stripItemsCount) {
+            const stripTextures = textures.slice(i, i + stripItemsCount);
             texturesInStrips.push(stripTextures);
         }
 
         return texturesInStrips;
-    }, [textures]);
-
-    console.log({ texturesByStrips });
-
+    }, [textures, stripItemsCount]);
 
     const stripsArray = useMemo(() => {
         const elements = [];
@@ -45,12 +41,12 @@ const Strips: React.FC<StripsProps> = ({ numStrips = 10 }) => {
                 key={i}
                 y={y}
                 textures={texturesByStrips[i] ?? []}
-                numPlanes={ITEMS_PER_STRIP}
+                itemsCount={stripItemsCount}
             />)
         }
 
         return elements;
-    }, [texturesByStrips, maxStrips])
+    }, [texturesByStrips, maxStrips, stripItemsCount])
 
     useEffect(() => {
         if (globalLenis?.__lenis) {

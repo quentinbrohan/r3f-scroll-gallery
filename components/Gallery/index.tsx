@@ -1,8 +1,7 @@
-import { ScrollScene, UseCanvas } from '@14islands/r3f-scroll-rig';
-import React, { Suspense, useRef } from 'react';
+import { UseCanvas } from '@14islands/r3f-scroll-rig';
 import { StickyScrollScene } from '@14islands/r3f-scroll-rig/powerups';
+import React, { Suspense, useRef } from 'react';
 import { Logo } from '../Logo';
-import Strip from './Strip';
 import Strips from './Strips';
 
 interface GalleryProps {
@@ -19,7 +18,6 @@ const Gallery: React.FC<GalleryProps> = ({ }) => {
                     {() => (
                         <Suspense>
                             <Logo />
-                            {/* <Strip /> */}
                             <Strips />
                         </Suspense>
                     )}

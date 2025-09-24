@@ -4,16 +4,19 @@ import Image from './Image';
 import { useFrame } from '@react-three/fiber';
 import gsap from 'gsap';
 
+export const DEFAULT_ITEMS_PER_STRIP = 6;
+export const DEFAULT_RADIUS = 2.5;
+
 interface StripProps {
-    numPlanes?: number;
+    itemsCount?: number;
     radius?: number
     y: number;
     textures: THREE.Texture[]
 }
 
 const Strip: React.FC<StripProps> = ({
-    numPlanes = 6,
-    radius = 2.5,
+    itemsCount = DEFAULT_ITEMS_PER_STRIP,
+    radius = DEFAULT_RADIUS,
     y,
     textures,
 }) => {
@@ -22,8 +25,8 @@ const Strip: React.FC<StripProps> = ({
     const meshes = useMemo(() => {
         const elements = []
 
-        for (let i = 0; i < numPlanes; i++) {
-            const angle = (Math.PI * 2) * (i / numPlanes)
+        for (let i = 0; i < itemsCount; i++) {
+            const angle = (Math.PI * 2) * (i / itemsCount)
 
             const x = Math.sin(angle) * radius;
             const z = Math.cos(angle) * radius;
@@ -40,7 +43,7 @@ const Strip: React.FC<StripProps> = ({
 
         return elements;
 
-    }, [numPlanes, radius])
+    }, [itemsCount, radius])
 
     const direction = gsap.utils.random(-0.3, 0.3)
 

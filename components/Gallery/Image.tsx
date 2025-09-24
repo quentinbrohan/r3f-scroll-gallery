@@ -1,4 +1,3 @@
-import { MeshDistortMaterial } from '@react-three/drei';
 import React, { useEffect, useRef } from 'react';
 import * as THREE from "three"
 
@@ -39,6 +38,7 @@ void main() {
    vUv = uv;
 }`
 
+// TODO: handle image + video, hover effect
     return (
         <mesh
             ref={meshRef}
