@@ -17,14 +17,15 @@ type GLTFResult = GLTF & {
     }
 }
 
-interface LogoProps extends THREE.Group { }
+interface LogoProps extends Partial<THREE.Group> { }
 
 export const Logo: React.FC<LogoProps> = (props) => {
     const { nodes, materials } = useGLTF('/shades-compressed.glb') as any as GLTFResult
     const groupRef = useRef<THREE.Group>(null)
 
     //  moves the geometry so its center of bounding box is at the local origin.
-    nodes.model.geometry.center()
+    const geometry = nodes.model.geometry.clone()
+    geometry.center()
 
     const globalLenis = useScrollbar();
 
@@ -45,7 +46,9 @@ export const Logo: React.FC<LogoProps> = (props) => {
 
     return (
         <group {...props} dispose={null} ref={groupRef}>
-            <mesh scale={100} castShadow receiveShadow geometry={nodes.model.geometry} material={materials.model}>
+            <mesh scale={100} castShadow receiveShadow
+                geometry={geometry}
+                material={materials.model}>
                 <meshNormalMaterial />
             </mesh>
         </group>

@@ -1,6 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three'
 import Image from './Image';
+import { useFrame } from '@react-three/fiber';
+import gsap from 'gsap';
 
 interface StripProps {
     numPlanes?: number;
@@ -13,6 +15,8 @@ const Strip: React.FC<StripProps> = ({
     radius = 2.5,
     y,
 }) => {
+    const groupRef = useRef<THREE.Group>(null);
+
     const meshes = useMemo(() => {
         const elements = []
 
@@ -24,9 +28,9 @@ const Strip: React.FC<StripProps> = ({
 
             elements.push(
                 <Image
-                key={i}
-                position={[x, 0, z]}
-                lookAtY={y}
+                    key={i}
+                    position={[x, 0, z]}
+                    lookAtY={y}
                 />
             )
         }
@@ -35,8 +39,29 @@ const Strip: React.FC<StripProps> = ({
 
     }, [numPlanes, radius])
 
+    const direction = gsap.utils.random(-0.3, 0.3)
+
+
+    useEffect(() => {
+        if (!groupRef.current) return;
+        const random = gsap.utils.random(110, 130)
+
+        groupRef.current.scale.set(random, random, random)
+    }, [])
+
+    useFrame(({ clock }) => {
+        if (!groupRef.current) return;
+
+        const time = clock.elapsedTime;
+
+        groupRef.current.rotation.y = time * direction;
+
+    })
+
     return (
-        <group scale={120} position-y={y}>
+        <group
+            ref={groupRef}
+            scale={120} position-y={y}>
             {meshes}
         </group>
     );

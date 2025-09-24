@@ -17,7 +17,7 @@ const Image: React.FC<ImageProps> = ({ position, lookAtY }) => {
 
     const fragmentShader = /*glsl*/ `
 void main() {
-   gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+   gl_FragColor = vec4(1.0, 0.0, 0.0, 0.6);
 }`
 
     const vertexShader = /*glsl*/ `
@@ -41,6 +41,7 @@ void main() {
                 // wireframe
                 vertexShader={vertexShader}
                 fragmentShader={fragmentShader}
+                transparent
                 uniforms={{
                     bendAmount: {
                         value: 0.1
