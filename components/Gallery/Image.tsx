@@ -1,5 +1,12 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from "three"
+import { Image as ImageDrei, useCursor } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
+import { easing } from 'maath';
+import React, { useEffect, useRef, useState } from 'react';
+import * as THREE from "three";
+import './utils';
+
+const DEFAULT_BEND_FACTOR = 0.1
+const DEFAULT_OPACITY = 0.6
 
 interface ImageProps {
     position: THREE.Vector3Tuple;
@@ -15,66 +22,34 @@ const Image: React.FC<ImageProps> = ({ position, lookAtY, texture }) => {
         meshRef.current.lookAt(0, lookAtY, 0)
     }, [])
 
-    const fragmentShader = /*glsl*/ `
-    uniform sampler2D uTexture;
-    varying vec2 vUv;
+    // TODO: handle image + video, hover effect
+    const [hovered, hover] = useState(false)
+    const pointerOver = (e) => (e.stopPropagation(), hover(true))
+    const pointerOut = () => hover(false)
 
-void main() {
-    vec3 image = texture2D(uTexture, vUv).rgb;
+    useFrame((_state, delta) => {
+        if (!meshRef.current) return;
+        easing.damp(meshRef.current.material, 'opacity', hovered ? 0.8 : DEFAULT_OPACITY, 0.2, delta)
+        easing.damp(meshRef.current.material, 'grayscale', hovered ? 0 : 1, 0.2, delta)
+    })
 
-   gl_FragColor = vec4(image, 0.6);
-}`
+    useCursor(hovered)
 
-    const vertexShader = /*glsl*/ `
-    uniform float bendAmount;
-    varying vec2 vUv;
-
-void main() {
-   vec3 newPosition = position;
-
-   newPosition.z -= sin(uv.x * 3.141) * bendAmount;
-
-   gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-   vUv = uv;
-}`
-
-// TODO: handle image + video, hover effect
     return (
-        <mesh
+        <ImageDrei
             ref={meshRef}
             position={position}
-            scale={[1.5, 1, 1]}
+            scale={[1, 1]}
+            texture={texture}
+            transparent
+            side={2}
+            radius={0}
+            onPointerOver={pointerOver}
+            onPointerOut={pointerOut}
         >
-            <planeGeometry args={[1, 1, 32, 1]} />
-            {/* <meshBasicMaterial side={2}
-                // wireframe
-                map={texture}
-                opacity={0.6}
-                vertexShader={vertexShader}
-                fragmentShader={fragmentShader}
-                transparent
-                uniforms={{
-                    bendAmount: {
-                        value: 0.1
-                    }
-                }}
-            /> */}
-            <shaderMaterial side={2}
-                // wireframe
-                vertexShader={vertexShader}
-                fragmentShader={fragmentShader}
-                transparent
-                uniforms={{
-                    bendAmount: {
-                        value: 0.1
-                    },
-                    uTexture: {
-                        value: texture
-                    }
-                }}
-            />
-        </mesh>
-    );
+            <bentPlaneGeometry args={[DEFAULT_BEND_FACTOR, 1, 1, 20, 20]} />
+        </ImageDrei>
+    )
 }
 
 export default Image;
