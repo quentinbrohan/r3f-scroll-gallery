@@ -1,7 +1,8 @@
 import { ScrollScene, UseCanvas } from '@14islands/r3f-scroll-rig';
 import React, { useRef } from 'react';
 import { StickyScrollScene } from '@14islands/r3f-scroll-rig/powerups';
-import { Logo } from './Logo';
+import { Logo } from '../Logo';
+import Strip from './Strip';
 
 interface GalleryProps {
 
@@ -16,7 +17,8 @@ const Gallery: React.FC<GalleryProps> = ({ }) => {
                 <StickyScrollScene track={track}>
                     {(props) => (
                         <>
-                            <Logo />
+                            {/* <Logo /> */}
+                            <Strip />
                         </>
                     )}
                 </StickyScrollScene>
