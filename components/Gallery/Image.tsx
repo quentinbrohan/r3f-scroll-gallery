@@ -4,14 +4,15 @@ import * as THREE from "three"
 
 interface ImageProps {
     position: THREE.Vector3Tuple;
+    lookAtY: number;
 }
 
-const Image: React.FC<ImageProps> = ({ position }) => {
+const Image: React.FC<ImageProps> = ({ position, lookAtY }) => {
     const meshRef = useRef<THREE.Mesh>(null)
 
     useEffect(() => {
         if (!meshRef.current) return;
-        meshRef.current.lookAt(0, 0, 0)
+        meshRef.current.lookAt(0, lookAtY, 0)
     }, [])
 
     const fragmentShader = /*glsl*/ `
@@ -37,7 +38,7 @@ void main() {
         >
             <planeGeometry args={[1, 1, 32, 1]} />
             <shaderMaterial side={2}
-                wireframe
+                // wireframe
                 vertexShader={vertexShader}
                 fragmentShader={fragmentShader}
                 uniforms={{

@@ -7,7 +7,7 @@ const GlobalScene = () => {
         <>
             <SmoothScrollbar config={{ lerp: 0.07, wheelMultiplier: 0.65 }} />
             <GlobalCanvas flat >
-                <OrbitControls />
+                {/* <OrbitControls /> */}
             </GlobalCanvas>
         </>
     )

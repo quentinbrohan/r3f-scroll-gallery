@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import { StickyScrollScene } from '@14islands/r3f-scroll-rig/powerups';
 import { Logo } from '../Logo';
 import Strip from './Strip';
+import Strips from './Strips';
 
 interface GalleryProps {
 
@@ -18,7 +19,8 @@ const Gallery: React.FC<GalleryProps> = ({ }) => {
                     {(props) => (
                         <>
                             {/* <Logo /> */}
-                            <Strip />
+                            {/* <Strip /> */}
+                            <Strips />
                         </>
                     )}
                 </StickyScrollScene>

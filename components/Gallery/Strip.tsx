@@ -5,11 +5,13 @@ import Image from './Image';
 interface StripProps {
     numPlanes?: number;
     radius?: number
+    y: number;
 }
 
 const Strip: React.FC<StripProps> = ({
     numPlanes = 6,
-    radius = 2.5
+    radius = 2.5,
+    y,
 }) => {
     const meshes = useMemo(() => {
         const elements = []
@@ -18,11 +20,14 @@ const Strip: React.FC<StripProps> = ({
             const angle = (Math.PI * 2) * (i / numPlanes)
 
             const x = Math.sin(angle) * radius;
-            const y = 0;
             const z = Math.cos(angle) * radius;
 
             elements.push(
-                <Image position={[x, y, z]} key={i} />
+                <Image
+                key={i}
+                position={[x, 0, z]}
+                lookAtY={y}
+                />
             )
         }
 
@@ -31,7 +36,7 @@ const Strip: React.FC<StripProps> = ({
     }, [numPlanes, radius])
 
     return (
-        <group scale={150}>
+        <group scale={120} position-y={y}>
             {meshes}
         </group>
     );
