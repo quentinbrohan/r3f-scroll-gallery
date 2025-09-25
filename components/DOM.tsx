@@ -7,7 +7,7 @@ interface DOMProps { }
 const DOM: React.FC<DOMProps> = () => {
     return (
         // TODO: need to compute height based on strips
-        <main className='relative h-[300vh] w-full bg-black/75'>
+        <main className='relative h-[300vh] w-full bg-black/90'>
             <Gallery />
         </main>
     )

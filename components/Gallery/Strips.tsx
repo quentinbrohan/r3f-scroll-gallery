@@ -11,7 +11,7 @@ interface StripsProps {
 }
 
 const Strips: React.FC<StripsProps> = ({ stripCount = 1, stripItemsCount = DEFAULT_ITEMS_PER_STRIP }) => {
-    const globalLenis = useScrollbar();
+    const lenis = useScrollbar();
 
     const groupRef = useRef<THREE.Group>(null)
 
@@ -49,13 +49,15 @@ const Strips: React.FC<StripsProps> = ({ stripCount = 1, stripItemsCount = DEFAU
     }, [texturesByStrips, maxStrips, stripItemsCount])
 
     useEffect(() => {
-        if (globalLenis?.__lenis) {
-            globalLenis.__lenis.on('scroll', ({ progress, velocity }) => {
+        if (lenis?.__lenis) {
+            lenis.__lenis.on('scroll', ({ progress, velocity }) => {
                 if (!groupRef.current) return;
                 // const scaleFactor = 0.05;
                 // const scaleFactor = 0.005;
                 const scaleFactor = 0.002;
-                const scale = (velocity * scaleFactor) + 1;
+                // const scale = (velocity * scaleFactor) + 1; // expand on scroll up, contract on scroll down
+                const scale = 1 - Math.abs(velocity) * scaleFactor; // contract on both scroll directions
+
 
                 groupRef.current.scale.set(scale, scale, scale)
                 groupRef.current.rotation.y = progress * (Math.PI * 2)
@@ -63,7 +65,7 @@ const Strips: React.FC<StripsProps> = ({ stripCount = 1, stripItemsCount = DEFAU
             })
         }
 
-    }, [globalLenis, maxStrips])
+    }, [lenis, maxStrips])
 
 
     return (

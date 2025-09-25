@@ -27,22 +27,23 @@ export const Logo: React.FC<LogoProps> = (props) => {
     const geometry = nodes.model.geometry.clone()
     geometry.center()
 
-    const globalLenis = useScrollbar();
+    const lenis = useScrollbar();
 
     useEffect(() => {
-        if (globalLenis?.__lenis) {
-            globalLenis.__lenis.on('scroll', ({ progress, velocity }) => {
-                console.log({ progress });
+        if (lenis?.__lenis) {
+            lenis.__lenis.on('scroll', ({ progress, velocity }) => {
                 if (!groupRef.current) return;
-                const scaleFactor = 0.05;
-                const scale = (velocity * scaleFactor) + 1;
+                // const scaleFactor = 0.0125;
+                // const scale = (velocity * scaleFactor) + 1;
+                // const cappedScale = Math.min(Math.max(scale, 1), 2);
 
-                groupRef.current.scale.set(scale, scale, scale)
+
+                // groupRef.current.scale.set(cappedScale, cappedScale, cappedScale)
                 groupRef.current.rotation.y = progress * (Math.PI * 2)
 
             })
         }
-    }, [globalLenis])
+    }, [lenis])
 
     return (
         <group {...props} dispose={null} ref={groupRef}>
