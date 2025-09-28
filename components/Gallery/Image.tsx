@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from "three";
 import './utils';
 
-const DEFAULT_BEND_FACTOR = 0.1
+const DEFAULT_BEND_FACTOR = -0.1;
 const DEFAULT_OPACITY = 0.6
 
 interface ImageProps {
@@ -19,10 +19,10 @@ const Image: React.FC<ImageProps> = ({ position, lookAtY, texture }) => {
 
     useEffect(() => {
         if (!meshRef.current) return;
-        meshRef.current.lookAt(0, lookAtY, 0)
-    }, [lookAtY])
+        meshRef.current.lookAt(0, lookAtY, 0);
+        meshRef.current.rotateY(Math.PI); // flip for the texture to face outside of the strip
+    }, [lookAtY]);
 
-    // TODO: handle image + video, hover effect
     const [hovered, hover] = useState(false)
     const pointerOver = (e) => (e.stopPropagation(), hover(true))
     const pointerOut = () => hover(false)
@@ -30,7 +30,7 @@ const Image: React.FC<ImageProps> = ({ position, lookAtY, texture }) => {
     useFrame((_state, delta) => {
         if (!meshRef.current) return;
         easing.damp(meshRef.current.material, 'opacity', hovered ? 0.9 : DEFAULT_OPACITY, 0.2, delta)
-        easing.damp(meshRef.current.material, 'grayscale', hovered ? 0 : 1, 0.2, delta)
+        // easing.damp(meshRef.current.material, 'grayscale', hovered ? 0 : 1, 0.2, delta)
     })
 
     useCursor(hovered)

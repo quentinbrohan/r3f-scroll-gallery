@@ -43,7 +43,7 @@ const Strip: React.FC<StripProps> = ({
 
         return elements;
 
-    }, [itemsCount, radius])
+    }, [itemsCount, radius, textures, y])
 
     const direction = gsap.utils.random(-0.25, 0.25)
 
